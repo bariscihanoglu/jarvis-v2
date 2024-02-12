@@ -1,7 +1,12 @@
 import pandas as pd
+import gensim
 
-# Preprocessor
+# Preprocess the Dataset
 
-dataframe = pd.read_csv('./dataset.csv')
+dataframe = pd.read_csv('./dataset.csv', usecols = [1])
 
-print(dataframe)
+content = dataframe.content.apply(gensim.utils.simple_preprocess)
+
+# Utilize Word Embedding Model
+
+word2vec = gensim.models.KeyedVectors.load_word2vec_format('../GoogleNews-vectors-negative300.bin', binary=True)
