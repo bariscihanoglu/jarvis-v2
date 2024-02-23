@@ -53,39 +53,42 @@ def retrieve_most_relevant_note_index(query, note_embeddings, model):
     most_similar_indexes = np.argsort(similarities)[::-1][:retrieve_count]
     most_similar_indexes = [i for i in most_similar_indexes if similarities[i] > 0.3]
     
-    # use this one to retrieve only the most relevant.
+    # use this one to retrieve only the most relevant index.
     # most_similar_indexes = np.argmax(similarities)
     return most_similar_indexes
 
 
+# EXECUTION
+
 # Load Word2Vec model
-word2vec_model = gensim.models.KeyedVectors.load_word2vec_format(
-    model_address,
-    binary=True,
-    limit=20000 # Limit of words (GoogleNews vector contains words with their prevalence of use)
-)
+if __name__ == '__main__':
+    word2vec_model = gensim.models.KeyedVectors.load_word2vec_format(
+        model_address,
+        binary=True,
+        limit=20000 # Limit of words (GoogleNews vector contains words with their prevalence of use)
+    )
 
-# Create data frame and preprocess
-data_frame = createDataFrame(dataset_address)
-preprocessed_data_frame = preProcessDataFrame(data_frame)
+    # Create data frame and preprocess the frame
+    data_frame = createDataFrame(dataset_address)
+    preprocessed_data_frame = preProcessDataFrame(data_frame)
 
-# Embed all notes in the dataframe
-note_embeddings = [get_embeddings(tokens, word2vec_model) for tokens in preprocessed_data_frame]
+    # Embed all notes in the dataframe
+    note_embeddings = [get_embeddings(tokens, word2vec_model) for tokens in preprocessed_data_frame]
 
-# Get the query
-while True:
-    query = input("\nJarvis-Mark2: Hello! What do you want to learn about the company?\n\nUser: ")
+    # Get the query
+    while True:
+        query = input("\nJarvis-Mark2: Hello! What do you want to learn about the company?\n\nUser: ")
 
-    # Retrieve the most relevant note
-    most_relevant_note_indexes = retrieve_most_relevant_note_index(query, note_embeddings, word2vec_model)
+        # Retrieve the most relevant note
+        most_relevant_note_indexes = retrieve_most_relevant_note_index(query, note_embeddings, word2vec_model)
 
-    if not (most_relevant_note_indexes):
-        time.sleep(1)
-        print("\nJarvis-Mark2: I couldn't find anything related in the database!")
-        time.sleep(3)
-    else:
-        print("\nJarvis-Mark2: Sure! I found this on my database:\n")
-        time.sleep(1)
-        for most_relevant_note_index in most_relevant_note_indexes:
-            print(f"Data {most_relevant_note_index + 1}: {data_frame['content'][most_relevant_note_index]}")
-        time.sleep(3)
+        if not (most_relevant_note_indexes):
+            time.sleep(1)
+            print("\nJarvis-Mark2: I couldn't find anything related in the database!")
+            time.sleep(3)
+        else:
+            print("\nJarvis-Mark2: Sure! I found this on my database:\n")
+            time.sleep(1)
+            for most_relevant_note_index in most_relevant_note_indexes:
+                print(f"Data {most_relevant_note_index + 1}: {data_frame['content'][most_relevant_note_index]}")
+            time.sleep(3)
