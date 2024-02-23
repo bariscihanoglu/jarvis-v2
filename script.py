@@ -12,15 +12,15 @@ dataset_address = './dataset.csv'
 retrieve_count = 3
 
 # 1.Preprocess the Dataset
-
 def createDataFrame(csv_file_address):
     return pd.read_csv(csv_file_address, usecols=[1])
+
 
 def preProcessDataFrame(data_frame):
     return data_frame.content.apply(gensim.utils.simple_preprocess)
 
-# 2.Utilize Word Embedding Model
 
+# 2.Utilize Word Embedding Model
 def get_embeddings(tokens, model):
     embeddings = [model[token] for token in tokens if token in model]
     if embeddings:
@@ -30,18 +30,20 @@ def get_embeddings(tokens, model):
         result[0] = -1 # Set the first to -1 to be able to detect easily.
         return result
 
-# 3. Retrieval System
 
+# 3. Retrieval System
 # Use word embedding
 def get_query_embedding(query, model):
     tokens = list(gensim.utils.tokenize(query, to_lower=True, deacc=True))
     embedding = get_embeddings(tokens, model)
     return embedding
 
+
 # Find similarities using sklearn
 def compute_similarity(query_embedding, note_embeddings):
     similarities = cosine_similarity([query_embedding], note_embeddings)
     return similarities[0]
+
 
 # Find the most relevant note
 def retrieve_most_relevant_note_index(query, note_embeddings, model):
@@ -60,8 +62,9 @@ def retrieve_most_relevant_note_index(query, note_embeddings, model):
 
 # EXECUTION
 
-# Load Word2Vec model
 if __name__ == '__main__':
+
+    # Load Word2Vec model
     word2vec_model = gensim.models.KeyedVectors.load_word2vec_format(
         model_address,
         binary=True,
