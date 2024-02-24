@@ -8,6 +8,8 @@ You can follow this link: https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS
 OR <br>
 Fork from this repo: https://github.com/mmihaltz/word2vec-GoogleNews-vectors/tree/master <br>
 
+Then, change the file path inside the script.
+
 ## Used Technologies
 
 ### Gensim:
