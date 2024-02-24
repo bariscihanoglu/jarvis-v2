@@ -1,5 +1,13 @@
 # Jarvis
 
+## Set-Up
+
+You should first download GoogleNews-vectors-negative300 as a binary file.
+
+You can follow this link: https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing
+OR
+Fork from this repo: https://github.com/mmihaltz/word2vec-GoogleNews-vectors/tree/master
+
 ## Used Technologies
 
 ### Gensim:
